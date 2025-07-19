@@ -1,4 +1,9 @@
-#!/bin/bash
+uploads/
+*.log
+*.txt
+.env
+*.bak
+*.zip#!/bin/bash
 
 # Change to your project directory
 cd /data/data/com.termux/files/home/htdocs/ai-support-desk
