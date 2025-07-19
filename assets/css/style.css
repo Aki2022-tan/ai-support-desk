@@ -1,0 +1,28 @@
+/* 
+  Class to initiate a fade-up entrance animation.
+  This is commonly applied when elements are rendered on scroll or during initial load.
+*/
+.fade-up {
+  /* Element starts fully transparent */
+  opacity: 0;
+
+  /* Slight downward offset to simulate movement from below */
+  transform: translateY(30px);
+
+  /* Assign the 'fade-up' animation with smooth easing */
+  animation: fade-up 0.6s ease-out forwards;
+}
+
+/* 
+  Keyframes definition for the fade-up effect.
+  Gradually transitions the element to full opacity and its original vertical position.
+*/
+@keyframes fade-up {
+  to {
+    /* Final visible state */
+    opacity: 1;
+
+    /* Reset vertical translation to original position */
+    transform: translateY(0);
+  }
+}
