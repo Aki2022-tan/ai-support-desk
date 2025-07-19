@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <!-- Navigation back to homepage -->
       <p class="mt-3 text-sm text-center">
-        <a href="index.php" class="text-gray-400 hover:text-blue-400 hover:underline">← Back to Home</a>
+        <a href="index.php" class="text-gray-400 hover:text-blue-400 hover:underline">←Back Home</a>
       </p>
     </div>
 
