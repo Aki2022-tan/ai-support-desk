@@ -82,7 +82,7 @@
       <!-- Feature Block 2: Smart Summaries -->
       <div class="bg-green-50 p-6 rounded-lg shadow hover:shadow-md transition">
         <h4 class="text-lg font-semibold mb-2">AI Summarized Insights</h4>
-        <p class="text-gray-600 text-sm">Each ticket gets a smart summary powered by Cohere AI for faster admin resolution.</p>
+        <p class="text-gray-600 text-sm">Each ticket gets  smart summary powered by Cohere AI for faster admin resolution.</p>
       </div>
 
       <!-- Feature Block 3: Admin Panel -->
