@@ -1,65 +1,64 @@
 <?php
 include('../admin/includes/header.php');
 
-// 📊 Stats using PDO
+// Fetch dashboard stats
 $totalUsers = $conn->query("SELECT COUNT(*) FROM users")->fetchColumn();
 $totalTickets = $conn->query("SELECT COUNT(*) FROM support_tickets")->fetchColumn();
 $pendingTickets = $conn->query("SELECT COUNT(*) FROM support_tickets WHERE status = 'pending'")->fetchColumn();
 $resolvedTickets = $conn->query("SELECT COUNT(*) FROM support_tickets WHERE status = 'resolved'")->fetchColumn();
 ?>
 
-<!-- 📦 Main Content -->
-<main class="flex-grow p-4 sm:p-6">
-  <!-- 🔹 Summary Cards -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-    <div class="bg-white p-4 rounded-xl shadow text-center">
-      <p class="text-gray-500 text-sm">👥 Total Users</p>
-      <h2 class="text-2xl font-bold text-blue-700"><?= $totalUsers ?></h2>
+<main class="flex-grow p-4 sm:p-6 bg-gray-50">
+  <!-- Overview Cards -->
+  <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="bg-white rounded-2xl shadow-sm p-6 flex flex-col gap-1 text-center">
+      <span class="text-sm text-gray-500">Total Users</span>
+      <span class="text-2xl font-semibold text-blue-600"><?= $totalUsers ?></span>
     </div>
-    <div class="bg-white p-4 rounded-xl shadow text-center">
-      <p class="text-gray-500 text-sm">🎫 Total Tickets</p>
-      <h2 class="text-2xl font-bold text-yellow-600"><?= $totalTickets ?></h2>
+    <div class="bg-white rounded-2xl shadow-sm p-6 flex flex-col gap-1 text-center">
+      <span class="text-sm text-gray-500">Total Tickets</span>
+      <span class="text-2xl font-semibold text-yellow-500"><?= $totalTickets ?></span>
     </div>
-    <div class="bg-white p-4 rounded-xl shadow text-center">
-      <p class="text-gray-500 text-sm">⏳ Pending</p>
-      <h2 class="text-2xl font-bold text-red-600"><?= $pendingTickets ?></h2>
+    <div class="bg-white rounded-2xl shadow-sm p-6 flex flex-col gap-1 text-center">
+      <span class="text-sm text-gray-500">Pending Tickets</span>
+      <span class="text-2xl font-semibold text-red-500"><?= $pendingTickets ?></span>
     </div>
-    <div class="bg-white p-4 rounded-xl shadow text-center">
-      <p class="text-gray-500 text-sm">✅ Resolved</p>
-      <h2 class="text-2xl font-bold text-green-600"><?= $resolvedTickets ?></h2>
+    <div class="bg-white rounded-2xl shadow-sm p-6 flex flex-col gap-1 text-center">
+      <span class="text-sm text-gray-500">Resolved Tickets</span>
+      <span class="text-2xl font-semibold text-green-500"><?= $resolvedTickets ?></span>
     </div>
-  </div>
+  </section>
 
-  <!-- 📈 Chart -->
-  <div class="bg-white p-6 mb-6 rounded-xl shadow">
-    <h3 class="text-lg font-bold text-gray-700 mb-2">📊 Tickets by Status</h3>
+  <!-- Chart Visualization -->
+  <section class="bg-white rounded-2xl shadow-sm p-6 mb-8">
+    <h2 class="text-lg font-medium text-gray-700 mb-4">Ticket Distribution</h2>
     <canvas id="ticketChart" height="120"></canvas>
-  </div>
+  </section>
 
-  <!-- 🔗 Quick Links -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-    <a href="manage-user.php" class="block bg-blue-600 hover:bg-blue-700 text-white text-center p-4 rounded-xl font-medium transition">
-      👥 Manage Users
+  <!-- Management Shortcuts -->
+  <section class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+    <a href="manage-user.php" class="bg-blue-600 hover:bg-blue-700 text-white text-center py-4 rounded-xl font-medium transition-shadow shadow-sm">
+      Manage Users
     </a>
-    <a href="manage-tickets.php" class="block bg-green-600 hover:bg-green-700 text-white text-center p-4 rounded-xl font-medium transition">
-      🛠️ Manage Tickets
+    <a href="manage-tickets.php" class="bg-green-600 hover:bg-green-700 text-white text-center py-4 rounded-xl font-medium transition-shadow shadow-sm">
+      Manage Tickets
     </a>
-  </div>
+  </section>
 
-  <!-- 📤 Export -->
+  <!-- Export Action -->
   <div class="text-right">
-    <a href="export.php" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-black text-sm">
-      ⬇️ Export Tickets as CSV
+    <a href="export.php" class="inline-block bg-gray-800 hover:bg-black text-white px-5 py-2 text-sm rounded-xl transition">
+      Export Tickets as CSV
     </a>
   </div>
 </main>
 
-<!-- 🔻 Footer -->
+<!-- Footer -->
 <footer class="text-center text-sm text-gray-400 py-6">
   &copy; <?= date('Y') ?> AI Support Desk — Admin Panel
 </footer>
 
-<!-- 📊 Chart Script -->
+<!-- Chart.js -->
 <script>
   const ctx = document.getElementById('ticketChart').getContext('2d');
   new Chart(ctx, {
@@ -67,10 +66,25 @@ $resolvedTickets = $conn->query("SELECT COUNT(*) FROM support_tickets WHERE stat
     data: {
       labels: ['Pending', 'Resolved'],
       datasets: [{
-        label: 'Tickets',
         data: [<?= $pendingTickets ?>, <?= $resolvedTickets ?>],
-        backgroundColor: ['#f87171', '#34d399']
+        backgroundColor: ['#f87171', '#34d399'],
+        borderWidth: 1
       }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+          labels: {
+            color: '#4B5563',
+            font: {
+              size: 12,
+              weight: '500'
+            }
+          }
+        }
+      }
     }
   });
 </script>

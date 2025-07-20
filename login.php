@@ -15,25 +15,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $email = trim($_POST['email'] ?? '');
   $password = $_POST['password'] ?? '';
 
-  // Validate input fields
   if ($email && $password) {
     try {
-      // Prepare and execute SQL to retrieve user record by email
       $stmt = $conn->prepare("SELECT id, name, password, role FROM users WHERE email = :email LIMIT 1");
       $stmt->bindParam(':email', $email, PDO::PARAM_STR);
       $stmt->execute();
 
       $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-      // Verify password and create session
       if ($user && password_verify($password, $user['password'])) {
-        session_regenerate_id(true); // Prevent session fixation
+        session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_email'] = $email;
         $_SESSION['user_name'] = $user['name'];
         $_SESSION['user_role'] = $user['role'];
 
-        // Redirect based on user role
         header("Location: " . ($user['role'] === 'admin' ? "admin/dashboard.php" : "pages/submit-ticket.php"));
         exit();
       } else {
@@ -65,28 +61,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
   </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 via-white to-gray-100 min-h-screen flex flex-col font-sans">
+<body class="bg-gradient-to-br from-white via-blue-50 to-white min-h-screen flex flex-col font-sans">
 
-<!-- Main container for login page -->
+<!-- Main container -->
 <div class="flex-grow flex items-center justify-center px-4 py-10">
   <div class="flex flex-col md:flex-row items-center gap-10 max-w-5xl w-full">
 
     <!-- Login form section -->
-    <div class="bg-white bg-opacity-90 backdrop-blur-md shadow-xl rounded-xl px-8 py-10 w-full max-w-md border border-blue-100 animate-fade-in">
+    <div class="bg-white shadow-lg rounded-2xl px-8 py-10 w-full max-w-md border border-gray-100 animate-fade-in">
       <div class="text-center mb-6">
         <div class="text-4xl mb-1">🔐</div>
         <h2 class="text-2xl font-extrabold text-gray-800">Welcome Back</h2>
         <p class="text-sm text-gray-500 mt-1">Login to your support portal</p>
       </div>
 
-      <!-- Display error messages if any -->
+      <!-- Error Message -->
       <?php if ($error): ?>
-        <div class="bg-red-100 text-red-700 p-3 rounded mb-4 transition-all">
+        <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
           <?= htmlspecialchars($error) ?>
         </div>
       <?php endif; ?>
 
-      <!-- Login form -->
+      <!-- Login Form -->
       <form method="POST" class="space-y-5" autocomplete="off">
         <div>
           <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
@@ -108,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </button>
       </form>
 
-      <!-- Registration and navigation links -->
+      <!-- Register + Navigation -->
       <p class="mt-6 text-sm text-center text-gray-500">
         Don’t have an account?
         <a href="register.php" class="text-blue-500 font-medium hover:underline">Register here</a>
@@ -119,9 +115,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </p>
     </div>
 
-    <!-- Visual illustration section -->
+    <!-- Visual section -->
     <div class="hidden md:block max-w-sm animate-fade-in">
-      <img src="assets/images/helpdesk.svg" alt="Support Illustration" class="w-full drop-shadow-lg">
+      <img src="assets/images/helpdesk.svg" alt="Support Illustration" class="w-full drop-shadow-md">
       <p class="text-center mt-4 text-sm text-gray-500 italic">“AI-powered support. Faster resolutions.”</p>
     </div>
   </div>
@@ -129,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!-- Footer -->
 <footer class="text-sm text-center text-gray-400 py-6">
-  &copy; <?= date('Y') ?> AI Support Desk. Built with care by Rogienald.
+  &copy; <?= date('Y') ?> AI Support Desk. Crafted with purpose by Rogienald.
 </footer>
 </body>
 </html>

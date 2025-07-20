@@ -1,7 +1,7 @@
 <?php
 include('../admin/includes/header.php'); // Includes session_start + admin role check
 
-// ✅ Handle ticket status update securely
+// Handle ticket status update securely
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
     $ticket_id = intval($_POST['ticket_id']);
     $new_status = trim($_POST['status']);
@@ -14,8 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
     }
 }
 
-// ✅ Filtering logic using PDO parameters
-   $search = $_GET['search'] ?? '';
+$search = $_GET['search'] ?? '';
 $filter_status = $_GET['status'] ?? '';
 $where = "1=1"; 
 $params = [];
@@ -36,45 +35,37 @@ $sql = "SELECT * FROM support_tickets WHERE $where ORDER BY created_at DESC";
 $stmt = $conn->prepare($sql);
 $stmt->execute($params);
 $tickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 ?>
 
-<!-- (HTML below is unchanged from your code — safe to use as is) -->
-<!-- 📦 Ticket Manager Section -->
 <section class="px-4 sm:px-6 py-6 max-w-7xl mx-auto space-y-6">
+  <h1 class="text-xl sm:text-2xl font-bold text-gray-800 tracking-tight">Manage Support Tickets</h1>
 
-  <h1 class="text-xl sm:text-2xl font-bold text-blue-700">🎫 Manage Support Tickets</h1>
-
-  <!-- 🔍 Filters and Search -->
   <form method="GET" class="space-y-3 sm:space-y-0 sm:flex sm:items-end sm:gap-4">
     <div class="w-full sm:w-1/3">
-      <label class="block mb-1 text-sm font-medium text-gray-600">Search</label>
+      <label class="block mb-1 text-sm font-medium text-gray-700">Search</label>
       <input type="text" name="search" placeholder="Subject, Email or Message"
         value="<?= htmlspecialchars($search) ?>"
-        class="w-full p-2 border border-gray-300 rounded-md shadow-sm" />
+        class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" />
     </div>
-
     <div class="w-full sm:w-1/4">
-      <label class="block mb-1 text-sm font-medium text-gray-600">Status</label>
+      <label class="block mb-1 text-sm font-medium text-gray-700">Status</label>
       <select name="status"
-        class="w-full p-2 border border-gray-300 rounded-md shadow-sm">
+        class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
         <option value="">All Status</option>
-        <option value="pending" <?= $filter_status == 'pending' ? 'selected' : '' ?>>⏳ Pending</option>
-        <option value="resolved" <?= $filter_status == 'resolved' ? 'selected' : '' ?>>✅ Resolved</option>
+        <option value="pending" <?= $filter_status == 'pending' ? 'selected' : '' ?>>Pending</option>
+        <option value="resolved" <?= $filter_status == 'resolved' ? 'selected' : '' ?>>Resolved</option>
       </select>
     </div>
-
     <div class="w-full sm:w-auto">
       <label class="block mb-1 text-sm opacity-0">Filter</label>
       <button type="submit"
-        class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm transition">
+        class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium">
         Filter
       </button>
     </div>
   </form>
 
-  <!-- ✅ DESKTOP TABLE -->
-  <div class="hidden sm:block overflow-x-auto border border-gray-200 rounded-lg shadow">
+  <div class="hidden sm:block overflow-x-auto border border-gray-200 rounded-xl shadow-sm">
     <table class="min-w-full text-sm text-left whitespace-nowrap">
       <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
         <tr>
@@ -86,20 +77,20 @@ $tickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <th class="px-4 py-3">Created</th>
         </tr>
       </thead>
-      <tbody class="bg-white">
+      <tbody class="bg-white divide-y divide-gray-100">
         <?php if (count($tickets) === 0): ?>
-          <tr><td colspan="6" class="text-center py-6 text-gray-500">📭 No tickets found.</td></tr>
+          <tr><td colspan="6" class="text-center py-6 text-gray-500">No tickets found.</td></tr>
         <?php endif; ?>
         <?php foreach ($tickets as $row): ?>
-          <tr class="border-t hover:bg-gray-50 transition">
+          <tr class="hover:bg-gray-50 transition">
             <td class="px-4 py-3"><?= $row['id'] ?></td>
             <td class="px-4 py-3">
-              <div class="font-semibold"><?= htmlspecialchars($row['name']) ?></div>
-              <div class="text-xs text-gray-400"><?= htmlspecialchars($row['email']) ?></div>
+              <div class="font-medium text-gray-800"><?= htmlspecialchars($row['name']) ?></div>
+              <div class="text-xs text-gray-500"><?= htmlspecialchars($row['email']) ?></div>
             </td>
             <td class="px-4 py-3"><?= htmlspecialchars($row['subject']) ?></td>
             <td class="px-4 py-3">
-              <span class="inline-block px-2 py-1 text-xs rounded font-medium
+              <span class="inline-block px-2 py-1 text-xs rounded-full font-semibold
                 <?= $row['status'] === 'resolved' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-800' ?>">
                 <?= ucfirst($row['status']) ?>
               </span>
@@ -112,10 +103,10 @@ $tickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <option value="pending" <?= $row['status'] === 'pending' ? 'selected' : '' ?>>Pending</option>
                     <option value="resolved" <?= $row['status'] === 'resolved' ? 'selected' : '' ?>>Resolved</option>
                   </select>
-                  <button name="update_status" class="text-blue-600 hover:underline text-xs font-semibold">Update</button>
+                  <button name="update_status" class="text-blue-600 hover:underline text-xs font-medium">Update</button>
                 </form>
                 <a href="respond-ticket.php?id=<?= $row['id'] ?>"
-                  class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-1 px-3 rounded-md shadow">
+                  class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium py-1 px-3 rounded-md shadow">
                   Reply
                 </a>
               </div>
@@ -129,32 +120,26 @@ $tickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </table>
   </div>
 
-  <!-- ✅ MOBILE CARDS -->
   <div class="sm:hidden space-y-4">
     <?php if (count($tickets) === 0): ?>
-      <div class="text-center text-gray-500">📭 No tickets found.</div>
+      <div class="text-center text-gray-500">No tickets found.</div>
     <?php endif; ?>
     <?php foreach ($tickets as $row): ?>
-      <div class="bg-white border rounded-lg p-4 shadow">
+      <div class="bg-white border rounded-xl p-4 shadow-sm">
         <div class="text-sm text-gray-600 mb-2">
           <strong>ID #<?= $row['id'] ?></strong> — <?= date('M d, Y H:i', strtotime($row['created_at'])) ?>
         </div>
-
         <div class="mb-2">
-          <p class="text-sm font-semibold"><?= htmlspecialchars($row['name']) ?></p>
-          <p class="text-xs text-gray-400"><?= htmlspecialchars($row['email']) ?></p>
+          <p class="text-sm font-medium text-gray-900"><?= htmlspecialchars($row['name']) ?></p>
+          <p class="text-xs text-gray-500"><?= htmlspecialchars($row['email']) ?></p>
         </div>
-
-        <p class="text-sm mb-2">📌 <strong><?= htmlspecialchars($row['subject']) ?></strong></p>
-
+        <p class="text-sm mb-2 font-semibold text-gray-700"><?= htmlspecialchars($row['subject']) ?></p>
         <p class="mb-2">
-          Status:
-          <span class="inline-block px-2 py-1 text-xs rounded font-medium
+          <span class="inline-block px-2 py-1 text-xs rounded-full font-semibold
             <?= $row['status'] === 'resolved' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-800' ?>">
             <?= ucfirst($row['status']) ?>
           </span>
         </p>
-
         <div class="flex flex-col gap-2 mt-2">
           <form method="POST" class="flex gap-2 items-center">
             <input type="hidden" name="ticket_id" value="<?= $row['id'] ?>">
@@ -163,11 +148,10 @@ $tickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <option value="resolved" <?= $row['status'] === 'resolved' ? 'selected' : '' ?>>Resolved</option>
             </select>
             <button name="update_status"
-              class="text-blue-600 hover:underline text-xs font-semibold">Update</button>
+              class="text-blue-600 hover:underline text-xs font-medium">Update</button>
           </form>
-
           <a href="respond-ticket.php?id=<?= $row['id'] ?>"
-            class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-1 px-3 rounded-md shadow text-center">
+            class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium py-1 px-3 rounded-md shadow text-center">
             Reply
           </a>
         </div>

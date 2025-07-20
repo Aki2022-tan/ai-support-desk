@@ -134,33 +134,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <p class="text-gray-600 text-sm">Logged in as: <strong><?= htmlspecialchars($_SESSION['user_name']) ?></strong></p>
     </div>
 
-    <form method="POST" enctype="multipart/form-data" class="space-y-5">
-      <div class="relative">
-        <label for="subject" class="block text-sm font-medium text-gray-700">Subject</label>
-        <input type="text" id="subjectInput" name="subject" placeholder="Start typing..." autocomplete="off"
-          class="mt-1 block w-full border border-gray-300 rounded-md px-4 py-2 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
-        <div id="aiLoader" class="absolute top-9 right-3 hidden">
-          <svg class="animate-spin h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-          </svg>
-        </div>
-        <ul id="suggestionList" class="absolute z-10 w-full bg-white border border-gray-200 rounded-md mt-1 shadow-lg text-sm hidden max-h-60 overflow-y-auto"></ul>
-      </div>
+<form method="POST" enctype="multipart/form-data" class="space-y-6">
+  <!-- Subject Field -->
+  <div class="relative group">
+    <label for="subject" class="text-sm font-medium text-gray-700">Subject</label>
+    <input 
+      type="text" 
+      id="subjectInput" 
+      name="subject" 
+      placeholder="Start typing your concern..."
+      autocomplete="off"
+      class="mt-1 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
+    >
+    <div id="aiLoader" class="absolute top-10 right-4 hidden">
+      <svg class="h-5 w-5 animate-spin text-blue-500" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+      </svg>
+    </div>
+    <ul id="suggestionList" class="absolute z-10 mt-2 max-h-60 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-md text-sm hidden"></ul>
+  </div>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Describe your issue</label>
-        <textarea name="message" rows="5" required class="w-full mt-1 border-gray-300 rounded-lg shadow-sm p-2 focus:ring-blue-200"></textarea>
-      </div>
+  <!-- Message Field -->
+  <div>
+    <label for="message" class="text-sm font-medium text-gray-700">Describe your issue</label>
+    <textarea 
+      name="message" 
+      id="message" 
+      rows="5" 
+      required
+      placeholder="Tell us what's going on..."
+      class="mt-1 w-full resize-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm shadow-sm transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
+    ></textarea>
+  </div>
 
-     <!-- File input and progress container -->
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Attachments (optional)</label>
-        <input type="file" name="attachments[]" multiple class="mt-1 block w-full text-sm text-gray-500 file:py-2 file:px-4 file:rounded file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-      </div>
+  <!-- Attachments -->
+  <div>
+    <label class="text-sm font-medium text-gray-700">Attachments <span class="text-gray-400">(optional)</span></label>
+    <input 
+      type="file" 
+      name="attachments[]" 
+      multiple
+      class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-blue-700 hover:file:bg-blue-100 transition"
+    >
+  </div>
 
-      <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition font-semibold">Submit Ticket</button>
-    </form>
+  <!-- Submit Button -->
+  <div>
+    <button 
+      type="submit" 
+      class="w-full rounded-xl bg-blue-600 px-6 py-3 text-white font-semibold shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-200"
+    >
+      Submit Ticket
+    </button>
+  </div>
+</form>
   </div>
 </main>
 
