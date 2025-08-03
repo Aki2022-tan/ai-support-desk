@@ -8,7 +8,7 @@
 function getPDOConnection() {
     // Database connection parameters
     $host = 'localhost';           // Host where the MySQL server is running
-    $db   = 'ai_support_desk';     // The name of the database being accessed
+    $db   = 'ai-support-desk';     // The name of the database being accessed
     $user = 'root';                // The username for database access
     $pass = '';                    // Password for the database user (commonly blank in local setups like KSWEB)
     $charset = 'utf8mb4';          // Character set supporting full UTF-8 including emojis and special symbols
